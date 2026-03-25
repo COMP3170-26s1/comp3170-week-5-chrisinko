@@ -27,7 +27,6 @@ public class Week5 implements IWindowListener {
 	private long oldTime;
 	
 	private Scene scene;
-
 	public Week5()  throws OpenGLException {		
 		
 		window = new Window("Flower field", width, height, this);
@@ -52,7 +51,7 @@ public class Week5 implements IWindowListener {
 		if (input.wasMouseClicked()) {
 			// TODO: Get the mouse position into NDC, and then into world space. (TASK 2)
 			input.getCursorPos(position); // This will get the mouse position in screen space.
-
+			
 			// TODO: Add a new flower at the mouse position. (TASK 3)
 		}
 		
@@ -63,8 +62,15 @@ public class Week5 implements IWindowListener {
 	private Matrix4f viewMatrix  = new Matrix4f();
 	private Matrix4f projectionMatrix  = new Matrix4f();
 	private Matrix4f mvpMatrix = new Matrix4f();
+	private Camera sceneCamera = new Camera();
 	
 	public void draw() {
+		
+		sceneCamera = scene.sceneCam();
+		sceneCamera.getViewMatrix(viewMatrix);
+		sceneCamera.getProjectionMatix(projectionMatrix);
+		projectionMatrix.mul(viewMatrix, mvpMatrix);
+		
 		update();
 	
 		glClearColor(87.0f/255.0f, 60.0f/255.0f, 23.0f/255.0f, 1.0f); // Dirt brown
@@ -74,6 +80,7 @@ public class Week5 implements IWindowListener {
 		//			Then send it down the scene graph!
 		scene.draw(mvpMatrix);
 			
+		
 	}
 
 	@Override
